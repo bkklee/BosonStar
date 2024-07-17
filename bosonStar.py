@@ -1,24 +1,37 @@
 import numpy as np
-from scipy.integrate import simpson, odeint
 import matplotlib.pyplot as plt
-
 from diffEqSolver import *
 
-mBosonCU = 2e-77
-aCU = 1e-73
 hBarCU = 1.1977151493389159e-76
-targetMass = 0.26843
 
-mu = findMu(targetMass, mBosonCU, aCU)
-print("MU=", mu)
-allThings = getProfile(mu, mBosonCU, aCU)
-print("MASS=", allThings["MCU"])
-x = allThings["x"]
-ans = allThings["profile"]
+def outputProfile(mBosonCU, aCU, targetMass):
+    mu = findMu(targetMass, mBosonCU, aCU)
+    allThings = getProfile(mu, mBosonCU, aCU)
+    print("MU=", mu, "MASS=", allThings["MCU"])
+    x = allThings["x"]
+    ans = allThings["profile"]
 
-np.savetxt("a.txt", ans)
-plt.plot(x, ans, 'b', label='f(x)')
-plt.legend(loc='best')
-plt.xlabel('x')
-plt.grid()
-plt.show()
+    #Find farpoint
+    farPoint = 0
+    for i in range(len(ans)):
+        if ans[i] == 0.0:
+            farPoint = i
+            break
+
+    simulationBox = 300
+
+    sli = int((farPoint*1.5)//simulationBox)
+    x = x[::sli]
+    ans = ans[::sli]
+    x = x[:simulationBox]
+    ans = ans[:simulationBox]
+
+    plt.plot(x, ans, 'b', label='f(x)')
+    plt.legend(loc='best')
+    plt.xlabel('x')
+    plt.grid()
+    plt.show()
+
+    return {"x": x, "profile": ans, "MCU": allThings["MCU"], "mBoson": mBosonCU, "aCU": aCU}
+
+#outputProfile(2e-77, 1e-73, 0.1)

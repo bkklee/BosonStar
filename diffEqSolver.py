@@ -76,7 +76,7 @@ def findMu(mass, mBosonCU, aCU):
         y0 = y1
         x1 = newX
         y1 = newY
-        if(newY < 1e-4):
+        if(abs(newY) < 1e-5):
             return newX
     
     return x1

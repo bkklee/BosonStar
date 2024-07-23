@@ -20,7 +20,7 @@ def outputProfile(mBosonCU, aCU, targetMass):
 
     simulationBox = 300
 
-    sli = int((farPoint*1.5)//simulationBox)
+    sli = int((farPoint*2.0)//simulationBox)
     x = x[::sli]
     ans = ans[::sli]
     x = x[:simulationBox]

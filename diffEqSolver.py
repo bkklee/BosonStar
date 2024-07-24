@@ -20,7 +20,7 @@ def diffEq(y, x, mu):
         dydx = [f1, f2, f3, 2.0*f*f - 4.0*f3/x + 10.0*f1*f2/f/x - 6.0*f1*f1*f1/f/f/x + 3.0*f3*f1/f + 2.0*f2*f2/f - 7.0*f1*f1*f2/f/f + 3.0*f1*f1*f1*f1/f/f/f + 2.0*f*mu*(f2+2.0*f1/x)]
         return dydx
     
-def solver(mu, A2, x=np.linspace(1e-20, 30.0, 100000)):
+def solver(mu, A2, x=np.linspace(1e-20, 40.0, 500000)):
     y0 = [1.0, 0.0, A2, 0.0]
     sol = odeint(diffEq, y0, x, args=(mu,))
     return x, sol[:, 0]

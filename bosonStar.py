@@ -18,7 +18,7 @@ def outputProfile(mBosonCU, aCU, targetMass):
             farPoint = i
             break
 
-    simulationBox = 300
+    simulationBox = 500
 
     sli = int((farPoint*2.0)//simulationBox)
     x = x[::sli]

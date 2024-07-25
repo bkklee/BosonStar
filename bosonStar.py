@@ -18,7 +18,7 @@ def outputProfile(mBosonCU, aCU, targetMass):
             farPoint = i
             break
 
-    simulationBox = 500
+    simulationBox = 1000
 
     sli = int((farPoint*2.0)//simulationBox)
     x = x[::sli]
@@ -32,6 +32,6 @@ def outputProfile(mBosonCU, aCU, targetMass):
     plt.grid()
     plt.show()
 
-    return {"x": x, "profile": ans, "MCU": allThings["MCU"], "mBoson": mBosonCU, "aCU": aCU}
+    return {"x": x[1::2], "profile": ans[1::2], "MCU": allThings["MCU"], "mBoson": mBosonCU, "aCU": aCU}
 
 #outputProfile(2e-77, 1e-73, 0.1)

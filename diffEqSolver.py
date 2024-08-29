@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.integrate import simpson, odeint
+from ctypes import *
 
 hBarCU = 1.1977151493389159e-76
 
@@ -52,14 +53,29 @@ def findA2(mu):
     return A2
 
 def getProfile(mu, mBosonCU, aCU):
-    A2 = findA2(mu)
-    x, profile = solver(mu, A2)
-    profile = cleanProfile(profile)
+    #A2 = findA2(mu)
+    #x, profile = solver(mu, A2)
+    x = np.empty(500000)
+    profile = np.empty(500000)
+
+    file = "./getRho.so"
+    my_func = CDLL(file)
+    x_new = (c_double * 500000)(*np.empty(500000))
+    profile_new = (c_double * 500000)(*np.empty(500000))
+    my_func.getRhoBoson1F(x_new, profile_new, c_double(aCU), c_double(mBosonCU), c_double(mu))
+
+    for i in range(500000):
+        x[i] = x_new[i]
+        profile[i] = profile_new[i]
+
+    #profile = cleanProfile(profile)
 
     n0 = pow(1.0/simpson(profile*x*x, x=x), 4.0)
     chi = mu/np.sqrt(n0)
     MCU = np.sqrt(chi*hBarCU*hBarCU/mBosonCU/aCU/4.0)
     b = hBarCU*hBarCU/2.0/MCU/mBosonCU/mBosonCU
+
+    print("MCU", MCU)
 
     return {"x": x*b/pow(n0,1.0/4.0), "profile": profile*n0*MCU/4.0/np.pi/b/b/b, "MCU": MCU}
 
@@ -76,7 +92,7 @@ def findMu(mass, mBosonCU, aCU):
         y0 = y1
         x1 = newX
         y1 = newY
-        if(abs(newY) < 1e-5):
+        if(abs(newY) < 1e-3):
             return newX
     
     return x1

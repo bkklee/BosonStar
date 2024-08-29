@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 from diffEqSolver import *
 
@@ -8,6 +7,8 @@ def outputProfile(mBosonCU, aCU, targetMass, boxSize):
     mu = findMu(targetMass, mBosonCU, aCU)
     allThings = getProfile(mu, mBosonCU, aCU)
     print("MU=", mu, "MASS=", allThings["MCU"])
+    #allThings = getProfile(0.31816194102760903, 2e-77, 1e-73)
+
     x = allThings["x"]
     ans = allThings["profile"]
 
